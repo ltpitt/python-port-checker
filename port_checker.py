@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+#
+# Dependencies:
+# to install notification read instructions here
+# https://github.com/ltpitt/python-simple-notifications
+
 import socket
 import notification
 import time
