@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 import socket
 import time
+import subprocess
 
 try:
     import notification
@@ -14,10 +15,17 @@ except ImportError:
     print
 
 # Customize those variables to meet your needs
-max_error_limit = 100
+max_error_limit = 2
 host = '127.0.0.1'
-port = 80
+port = 9091
 
+def restart_service():
+    # Insert here your service restart script / command changing the contento of restart_command variable (use absolute path)
+    restart_command = '/usr/sbin/service transmission-daemon restart'
+    c = subprocess.Popen(restart_command, shell=True)
+    c.wait()
+    return c
+    
 def reset_error_counter():
     # Reset error counter so it won't flood you with notifications
     file = open('ErrorCount.log', 'w')
@@ -38,6 +46,7 @@ def increase_error_count():
         # Send email, pushover, slack or do any other fancy stuff
         ko_message = "Port " + str(port) + " is not listening"
         print(ko_message)
+        restart_service()
         try:
             notification.send_pushover_notification(ko_message)
         except NameError:
